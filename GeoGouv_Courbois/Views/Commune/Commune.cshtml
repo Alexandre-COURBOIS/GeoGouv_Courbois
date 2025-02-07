@@ -1,0 +1,34 @@
+﻿@model List<Commune>
+ 
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<body>
+    <input type="text" id="search" placeholder="ville, code, code département, code postal..." class="form-control mb-2">
+
+    <div class="container">
+        <table class="table table-striped table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th data-sort="Nom" style="cursor: pointer;">Nom ⬆️</th>
+                    <th data-sort="Code" style="cursor: pointer;">Code ⬆️</th>
+                    <th data-sort="CodeDepartement" style="cursor: pointer;">Département ⬆️</th>
+                    <th data-sort="Population" style="cursor: pointer;">Population ⬆️</th>
+                    <th data-sort="CodeEpci" style="cursor: pointer;">code Ecpi ⬆️</th>
+                    <th data-sort="CodeRegion" style="cursor: pointer;">code Région ⬆️</th>
+                    <th style="cursor: pointer;">code postaux</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="commune-table-body">
+            </tbody>
+        </table>
+    </div>
+
+    <div id="loading" style="text-align: center; display: none;">
+        <p>Chargement...</p>
+    </div>
+
+    <script type="module" src="~/js/main.js"></script>
+</body>
