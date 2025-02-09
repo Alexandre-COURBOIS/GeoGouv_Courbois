@@ -1,4 +1,25 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿//jQuery to collapse the navbar on scroll
+var header_height = $('.navbar').height(),
+    intro_height = $('.intro-section').height(),
+    offset_val = intro_height + header_height;
+$(window).scroll(function () {
+    var scroll_top = $(window).scrollTop();
+    if (scroll_top >= offset_val) {
+        $(".navbar-fixed-top").addClass("top-nav-collapse");
+        $(".navbar-fixed-top").removeClass("navbar-transparent");
+    } else {
+        $(".navbar-fixed-top").removeClass("top-nav-collapse");
+        $(".navbar-fixed-top").addClass("navbar-transparent");
+    }
+});
 
-// Write your JavaScript code.
+//jQuery for page scrolling feature - requires jQuery Easing plugin
+$(function () {
+    $('a.page-scroll').bind('click', function (event) {
+        var $anchor = $(this);
+        $('html, body').stop().animate({
+            scrollTop: $($anchor.attr('href')).offset().top
+        }, 1500, 'easeInOutExpo');
+        event.preventDefault();
+    });
+});

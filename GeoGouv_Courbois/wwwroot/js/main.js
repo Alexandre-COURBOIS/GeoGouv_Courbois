@@ -1,4 +1,4 @@
-﻿import { getCommunesToDisplay, filterTable } from "./pages/communePage.js";
+﻿import { getVilleToDisplay, filterTable } from "./pages/villePage.js";
 import { setupLazyLoaderOnScroll } from "./utils/lazyLoader.js";
 
 let sortBy = "nom"; 
@@ -33,11 +33,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     sessionStorage.setItem("ascending", ascending);
                     sessionStorage.setItem("sortBy", sortBy);
                 }
-                getCommunesToDisplay(true, sortBy, ascending); 
+                getVilleToDisplay(true, sortBy, ascending); 
             }
         });
     });
 
-    getCommunesToDisplay(true, sortBy, true);
+    getVilleToDisplay(true, sortBy, true);
     setupLazyLoaderOnScroll();
 });

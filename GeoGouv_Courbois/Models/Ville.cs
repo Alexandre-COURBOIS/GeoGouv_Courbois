@@ -2,7 +2,7 @@
 
 namespace GeoGouv_Courbois.Models
 {
-    public class Commune
+    public class Ville
     {
         [JsonPropertyName("nom")]
         public string? Nom { get; set; }

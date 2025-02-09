@@ -1,14 +1,15 @@
-# Forcer l'encodage UTF-8 pour éviter tout problème d'affichage
+#Encodage pour vérification de tous type de caractères sur les retours console
 [console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
-# Définition des paramètres
+#Paramètres du script
 $projectPath = "C:\developpement_project\GeoGouv_Courbois\GeoGouv_Courbois"
-$publishPath = "C:\inetpub\wwwroot\GeoGouv"
+$publishPath = "C:\inetpub\wwwroot\GeoGouv_ACourbois"
 $siteName = "GeoGouv"
 $appPoolName = "GeoGouvPool"
-$dbName = "GeoGouv"
+$dbName = "CesiGeoGouv"
 $expositionPort = 4850
 $connectionString = "Server=localhost;Database=$dbName;Trusted_Connection=True;"
+$sqlScriptPath = "C:\developpement_project\GeoGouv_Courbois\GeoGouv_Courbois\script_database.sql"  # 📌 Chemin de ton script SQL
 
 Write-Host "Déploiement en cours..."
 
@@ -52,7 +53,7 @@ dotnet publish --configuration Release --output $publishPath
 
 Write-Host "Configuration d'IIS..."
 
-# Vérifier et recréer le pool d'application
+#Vérifier et recréer le pool d'application
 $pool = Get-IISAppPool | Where-Object { $_.Name -eq $appPoolName }
 if ($null -eq $pool) {
     New-WebAppPool -Name $appPoolName
@@ -64,7 +65,7 @@ if ($null -eq $pool) {
     Write-Host "Pool d'application $appPoolName recréé."
 }
 
-# Vérifier et supprimer le site existant avant recréation
+#Vérifier et supprimer le site existant avant recréation
 $site = Get-Website | Where-Object { $_.Name -eq $siteName }
 if ($site) {
     Write-Host "Le site $siteName existe déjà. Suppression..."
@@ -73,11 +74,21 @@ if ($site) {
     Write-Host "Ancien site supprimé."
 }
 
-# Création du nouveau site IIS
+#Création du nouveau site IIS
 New-Website -Name $siteName -PhysicalPath $publishPath -ApplicationPool $appPoolName
 Start-Website -Name $siteName
 Set-ItemProperty "IIS:\Sites\$siteName" -Name bindings -Value @{protocol="http";bindingInformation=":${expositionPort}:"}
 Write-Host "Site IIS $siteName déployé sur http://localhost:$expositionPort"
+
+#Vérifier si le site est arrêté et le démarrer
+$siteStatus = Get-Website -Name $siteName | Select-Object -ExpandProperty state
+if ($siteStatus -eq "Stopped") {
+    Write-Host "Le site $siteName est actuellement arrêté. Tentative de démarrage..."
+    Start-Website -Name $siteName
+    Write-Host "Site $siteName démarré avec succès."
+} else {
+    Write-Host "Le site $siteName est déjà en cours d'exécution."
+}
 
 ### 4️) Configuration de la base de données ###
 
@@ -92,19 +103,25 @@ try {
     exit 1
 }
 
-# Vérifier l'existence de la base de données
+# Vérifier si la base de données existe déjà
 $checkDb = Invoke-Sqlcmd -ServerInstance "localhost" -Query "SELECT name FROM sys.databases WHERE name = '$dbName'"
 if ($null -eq $checkDb) {
+    Write-Host "Création de la base de données $dbName..."
     Invoke-Sqlcmd -ServerInstance "localhost" -Query "CREATE DATABASE [$dbName]"
     Write-Host "Base de données $dbName créée."
 } else {
     Write-Host "Base de données $dbName déjà existante."
 }
 
-# Appliquer les migrations Entity Framework Core
-Write-Host "Application des migrations..."
-dotnet ef database update
-Write-Host "Migrations appliquées."
+# 📌 Exécuter le script SQL pour configurer la base
+if (Test-Path $sqlScriptPath) {
+    Write-Host "Exécution du script SQL : $sqlScriptPath..."
+    Invoke-Sqlcmd -ServerInstance "localhost" -Database "$dbName" -InputFile $sqlScriptPath
+    Write-Host "Script SQL exécuté avec succès."
+} else {
+    Write-Host "Erreur : Le fichier SQL $sqlScriptPath n'existe pas."
+    exit 1
+}
 
-### 🔚 Fin du déploiement ###
+###Fin du déploiement ###
 Write-Host "Déploiement terminé. Accédez à http://localhost:$expositionPort"

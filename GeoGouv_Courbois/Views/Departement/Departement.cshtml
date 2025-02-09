@@ -1,0 +1,50 @@
+﻿@model List<Dictionary<string, object>>
+
+@{
+    ViewData["Title"] = "Liste des Départements et Villes";
+}
+
+<h2>Liste des Départements et Villes</h2>
+
+<div class="container">
+    @foreach (var departement in Model)
+    {
+        <div class="departement">
+            <h3>@departement["NomDepartement"] (@departement["CodePostalDepartement"])</h3>
+            <ul>
+                @foreach (var ville in (List<Dictionary<string, object>>)departement["Villes"])
+                {
+                    <li class="custom-li">@ville["Commune"] (@ville["CodePostal"])</li>
+                }
+            </ul>
+        </div>
+    }
+</div>
+
+@* Présent uniquement ici car c'est une démo *@
+<style>
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    .departement {
+        margin-bottom: 20px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    h3 {
+        color: #333;
+    }
+
+    ul {
+        padding-left: 20px;
+    }
+
+    .custom-li {
+        list-style: square;
+    }
+</style>

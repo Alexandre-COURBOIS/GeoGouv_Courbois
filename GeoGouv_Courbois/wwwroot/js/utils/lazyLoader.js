@@ -1,4 +1,4 @@
-﻿import { getCommunesToDisplay, getIsLoading } from "../pages/communePage.js";
+﻿import { getVilleToDisplay, getIsLoading } from "../pages/villePage.js";
 
 export function setupLazyLoaderOnScroll() {
     window.addEventListener('scroll', () => {
@@ -7,7 +7,7 @@ export function setupLazyLoaderOnScroll() {
             var ascending = sessionStorage.getItem("ascending", ascending);
             var sortBy = sessionStorage.getItem("sortBy", sortBy);
 
-            getCommunesToDisplay(false, sortBy, ascending);
+            getVilleToDisplay(false, sortBy, ascending);
         }
     });
 }

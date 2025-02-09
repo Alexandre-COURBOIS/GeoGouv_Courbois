@@ -14,7 +14,7 @@ builder.Services.Configure<GeoGouvApiConf>(builder.Configuration.GetSection("Geo
 builder.Services.Configure<SqlConfiguration>(builder.Configuration.GetSection("SqlConfiguration"));
 
 //Ajout du service dans l'injection de dépendance
-builder.Services.AddHttpClient<ICommuneService, CommuneService>((config, client) =>
+builder.Services.AddHttpClient<IVilleService, VilleService>((config, client) =>
 {
     var geoGouvApiConf = config.GetRequiredService<IOptions<GeoGouvApiConf>>().Value;
 
@@ -46,6 +46,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Ville}/{action=Ville}/{id?}");
 
 app.Run();
