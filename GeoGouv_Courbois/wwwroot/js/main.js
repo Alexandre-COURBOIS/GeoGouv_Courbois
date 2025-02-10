@@ -4,19 +4,22 @@ import { setupLazyLoaderOnScroll } from "./utils/lazyLoader.js";
 let sortBy = "nom"; 
 let ascending = "asc";
 
+/*Ajoute des évènements de déclenchage lorsque le DOM est chargé*/
 document.addEventListener("DOMContentLoaded", () => {
 
     const searchInput = document.getElementById("search");
     const tableHeaders = document.querySelectorAll("th[data-sort]");
 
+    /*Lorsque l'utilisateur fait une saisie dans la barre de recherche j'enclenche le filtre d'affichage du tableau*/
     if (searchInput) {
         searchInput.addEventListener("keyup", () => {
             filterTable();
         });
     } else {
-        console.error("Erreur : impossible de trouver l'élément search dans le DOM");
+        console.error("Error : Impossible to find this element in the DOM");
     }
 
+    /*Gestion du trie lors du click sur une colonne et affichage en fonction*/    
     tableHeaders.forEach(header => {
         header.addEventListener("click", () => {
             const clickedColumn = header.getAttribute("data-sort");
@@ -37,7 +40,9 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     });
-
+    /*Affichage par défaut*/
     getVilleToDisplay(true, sortBy, true);
+
+    /*Mise en place du lazy loader lors des scrolls*/
     setupLazyLoaderOnScroll();
 });

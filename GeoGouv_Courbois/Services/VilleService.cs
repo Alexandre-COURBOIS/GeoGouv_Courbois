@@ -26,8 +26,7 @@ namespace GeoGouv_Courbois.Services
             _sqlService = sqlService;
         }
 
-        //Initialisation de la connexion à l'API GeoGouv récupération des villes et sérialisation des données pour les obtenirs
-        //sous forme de liste d'objets "Ville"
+        //Initialisation de la connexion à l'API GeoGouv récupération des villes et sérialisation des données pour les obtenirs sous forme de liste d'objets "Ville"
         public async Task<List<Ville>> GetVilles()
         {
             try
@@ -101,7 +100,7 @@ namespace GeoGouv_Courbois.Services
             return await GetApiData<Departement>("departements/" + codeDepartement);
         }
 
-        //Appel à la généricitée afin de pouvoir requêter sur l'api geoGouv en définissant le retour voulu en fonction du endpoint sur l'api
+        //Appel à la généricitée afin de pouvoir requêter sur l'api geoGouv en définissant l'objet de retour voulu en fonction du endpoint sur l'api
         private async Task<T> GetApiData<T>(string endpoint)
         {
             try

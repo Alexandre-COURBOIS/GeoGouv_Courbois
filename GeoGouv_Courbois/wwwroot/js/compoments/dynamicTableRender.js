@@ -1,5 +1,7 @@
 ﻿
 import { fetchDetailsVille } from "../services/villeService.js";
+
+/*Creation del'affichage de mon tableau de manière dynamique*/
 export function renderTable(villeList) {
     const tableBody = document.getElementById("ville-table-body");
     tableBody.innerHTML = "";
@@ -21,7 +23,7 @@ export function renderTable(villeList) {
         `;
         tableBody.insertAdjacentHTML('beforeend', row);
     });
-
+/*Ajout de l'appel au controller afin d'ajouter en base la ville et le departement */
     tableBody.querySelectorAll(".details-btn").forEach(button => {
         button.addEventListener("click", function () {
             const code = this.getAttribute("data-code");

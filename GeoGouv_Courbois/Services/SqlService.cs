@@ -27,6 +27,7 @@ namespace GeoGouv_Courbois.Services
             _logger = logger;
         }
 
+        //Connexion à ma base de données et insertion via procédure stockée des paramètres avec protection contre injection SQL 
         public bool InsertVilleAndDepartement(string codePostalDepartement, string nomDepartement,
                                      string commune, string nomCommuneMinuscule,
                                      string codePostal, string codeInsee)
@@ -61,7 +62,7 @@ namespace GeoGouv_Courbois.Services
                 return false;
             }
         }
-
+        //Connexion à ma base de données et récupération via procédure stockée des villes et départements
         public List<Dictionary<string, object>> GetAllDepartementsWithVilles()
         {
             var departements = new List<Dictionary<string, object>>();
