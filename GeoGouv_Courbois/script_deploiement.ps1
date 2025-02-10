@@ -1,15 +1,16 @@
-#Encodage pour vérification de tous type de caractères sur les retours console
-[console]::OutputEncoding = [System.Text.Encoding]::UTF8
+#Paramètres du script à Modifier
+$projectPath = "C:\Users\courb\Documents\developpement\GeoGouv_Courbois-master\GeoGouv_Courbois"
+$sqlScriptPath = "$projectPath\script_database.sql"  
 
-#Paramètres du script
-$projectPath = "C:\developpement_project\GeoGouv_Courbois\GeoGouv_Courbois"
+#Paramètres du script à Modifier si nécessaire : 
 $publishPath = "C:\inetpub\wwwroot\GeoGouv_ACourbois"
+$expositionPort = 4850
+
+#Paramètres du script à ne pas toucher 
 $siteName = "GeoGouv"
 $appPoolName = "GeoGouvPool"
 $dbName = "CesiGeoGouv"
-$expositionPort = 4850
 $connectionString = "Server=localhost;Database=$dbName;Trusted_Connection=True;"
-$sqlScriptPath = "C:\developpement_project\GeoGouv_Courbois\GeoGouv_Courbois\script_database.sql"  # 📌 Chemin de ton script SQL
 
 Write-Host "Déploiement en cours..."
 
@@ -113,7 +114,8 @@ if (Test-Path $sqlScriptPath) {
     exit 1
 }
 
-### 5) Vérifier si le site est arrêté et le démarrer ###
+### 5) Lancement du site sur IIS ###
+#Vérifier si le site est arrêté et le démarrer
 $siteStatus = Get-Website -Name $siteName | Select-Object -ExpandProperty state
 if ($siteStatus -eq "Stopped") {
     Write-Host "Le site $siteName est actuellement arrêté. Tentative de démarrage..."
@@ -122,7 +124,6 @@ if ($siteStatus -eq "Stopped") {
 } else {
     Write-Host "Le site $siteName est déjà en cours d'exécution."
 }
-
 
 ###Fin du déploiement ###
 Write-Host "Déploiement terminé. Accédez à http://localhost:$expositionPort"
