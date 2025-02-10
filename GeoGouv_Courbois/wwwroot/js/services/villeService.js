@@ -3,7 +3,9 @@ export async function getVilles(page, pageSize, sortBy, ascending, search) {
     try {
         const response = await fetch(`/Ville/GetPaginatedVilles?page=${page}&pageSize=${pageSize}&sortBy=${sortBy}&ascending=${ascending}&search=${encodeURIComponent(search)}`);
 
-        if (!response.ok) throw new Error("Error while trying to get city datas");
+        if (!response.ok) {
+            throw new Error("Error while trying to get city datas");
+        }
 
         return await response.json();
     } catch (error) {

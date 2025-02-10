@@ -1,9 +1,6 @@
-﻿using GeoGouv_Courbois.Controllers;
-using GeoGouv_Courbois.Helpers;
+﻿using GeoGouv_Courbois.Helpers;
 using GeoGouv_Courbois.Models;
 using GeoGouv_Courbois.Services.Interfaces;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 using System.Text.Json;
@@ -51,7 +48,7 @@ namespace GeoGouv_Courbois.Services
         }
 
         //Permet de récupérer les villes triées et gère l'affichage par "page" 50 par 50.
-        public async Task<IEnumerable<Ville>> GetOrdereVille(int page, int pageSize, string sortBy, bool? ascending, string search)
+        public async Task<IEnumerable<Ville>> GetOrderedVille(int page, int pageSize, string sortBy, bool? ascending, string search)
         {
             if (_allVilles.IsNullOrEmpty())
             {
@@ -154,7 +151,7 @@ namespace GeoGouv_Courbois.Services
 
             PropertyInfo property = GetPropertyValue(sortBy);
 
-            if (property == null || !ascending.HasValue)
+            if (property == null)
             {
                 return _allVilles.ToList();
             }

@@ -26,7 +26,7 @@ namespace GeoGouv_Courbois.Controllers
         [HttpGet]
         public async Task<IActionResult> GetPaginatedVilles(int page = 1, int pageSize = 50, string sortBy = "nom", bool? ascending = null, string search = "")
         {
-            var villes = await _villeService.GetOrdereVille(page, pageSize, sortBy, ascending, search);
+            var villes = await _villeService.GetOrderedVille(page, pageSize, sortBy, ascending, search);
 
             return Ok(villes);
         }

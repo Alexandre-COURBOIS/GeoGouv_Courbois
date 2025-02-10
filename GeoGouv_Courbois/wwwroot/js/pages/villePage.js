@@ -26,7 +26,7 @@ async function getVilleToDisplay(reset = false, sortBy, ascending) {
     if (isLoading) return;
     isLoading = true;
     document.getElementById("loading").style.display = "block";
-
+    console.log(reset, sortBy, ascending);
     try {
         if (reset) {
             currentPage = 1;
@@ -36,6 +36,8 @@ async function getVilleToDisplay(reset = false, sortBy, ascending) {
         }
 
         const villes = await getVilles(currentPage, villePerPage, sortBy, ascending, search);
+
+        console.log(villes);
 
         allVilles.push(...villes);
         displayedVilles = [...allVilles];

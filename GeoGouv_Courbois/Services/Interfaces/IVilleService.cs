@@ -6,7 +6,7 @@ namespace GeoGouv_Courbois.Services.Interfaces
     {
         Task<List<Ville>> GetVilles();
 
-        Task<IEnumerable<Ville>> GetOrdereVille(int page, int pageSize, string sortBy, bool? ascending, string search);
+        Task<IEnumerable<Ville>> GetOrderedVille(int page, int pageSize, string sortBy, bool? ascending, string search);
         bool InsertVilleAndDepartementInDB(Departement dpt, Ville ville);
 
         Task<Ville> GetVilleDetails(String codeVille);
