@@ -80,16 +80,6 @@ Start-Website -Name $siteName
 Set-ItemProperty "IIS:\Sites\$siteName" -Name bindings -Value @{protocol="http";bindingInformation=":${expositionPort}:"}
 Write-Host "Site IIS $siteName déployé sur http://localhost:$expositionPort"
 
-#Vérifier si le site est arrêté et le démarrer
-$siteStatus = Get-Website -Name $siteName | Select-Object -ExpandProperty state
-if ($siteStatus -eq "Stopped") {
-    Write-Host "Le site $siteName est actuellement arrêté. Tentative de démarrage..."
-    Start-Website -Name $siteName
-    Write-Host "Site $siteName démarré avec succès."
-} else {
-    Write-Host "Le site $siteName est déjà en cours d'exécution."
-}
-
 ### 4️) Configuration de la base de données ###
 
 Write-Host "Configuration de la base de données..."
@@ -113,7 +103,7 @@ if ($null -eq $checkDb) {
     Write-Host "Base de données $dbName déjà existante."
 }
 
-# 📌 Exécuter le script SQL pour configurer la base
+# Exécuter le script SQL pour configurer la base
 if (Test-Path $sqlScriptPath) {
     Write-Host "Exécution du script SQL : $sqlScriptPath..."
     Invoke-Sqlcmd -ServerInstance "localhost" -Database "$dbName" -InputFile $sqlScriptPath
@@ -122,6 +112,17 @@ if (Test-Path $sqlScriptPath) {
     Write-Host "Erreur : Le fichier SQL $sqlScriptPath n'existe pas."
     exit 1
 }
+
+### 5) Vérifier si le site est arrêté et le démarrer ###
+$siteStatus = Get-Website -Name $siteName | Select-Object -ExpandProperty state
+if ($siteStatus -eq "Stopped") {
+    Write-Host "Le site $siteName est actuellement arrêté. Tentative de démarrage..."
+    Start-Website -Name $siteName
+    Write-Host "Site $siteName démarré avec succès."
+} else {
+    Write-Host "Le site $siteName est déjà en cours d'exécution."
+}
+
 
 ###Fin du déploiement ###
 Write-Host "Déploiement terminé. Accédez à http://localhost:$expositionPort"
